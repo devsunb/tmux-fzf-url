@@ -14,12 +14,12 @@ fzf_filter() {
     fzf_version="$(fzf --version 2>/dev/null | awk '{print $1}')"
     fzf_options="$(tmux show -gqv '@fzf-url-fzf-options')"
 
+    fzf_cmd="fzf-tmux ${fzf_options:--w 100% -h 50% --multi --exit-0 --no-preview}"
     # fzf after version 0.53.0 supports native tmux integration
     if version_ge "$fzf_version" "0.53.0"; then
-        fzf ${fzf_options:---tmux center,100%,50% --multi --exit-0 --no-preview}
-    else
-        fzf-tmux ${fzf_options:--w 100% -h 50% --multi --exit-0 --no-preview}
+        fzf_cmd="fzf ${fzf_options:---tmux center,100%,50% --multi --exit-0 --no-preview}"
     fi
+    eval "$fzf_cmd"
 }
 
 custom_open=$3
